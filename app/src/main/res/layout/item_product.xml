@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/not_so_dark_black">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_product_pic"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_75"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_product_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:textColor="@color/off_white"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_product_desc"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_pic"
+        app:layout_constraintTop_toTopOf="@+id/iv_product_pic"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Product Title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_product_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_25"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/off_white"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_product_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_title"
+        tools:text="Masala dosa is a popular South Indian breakfast where a crispy crepe made of fermented rice and lentil batter is served with flavorful spiced potato curry. It is a wholesome meal in itself as it is served with potato masala, Coconut chutney and Sambar." />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:textColor="@color/off_white"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_product_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_title"
+        tools:text="₹ 50" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/off_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_pic"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product_pic"
+        tools:text="₹ 50" />
+</androidx.constraintlayout.widget.ConstraintLayout>

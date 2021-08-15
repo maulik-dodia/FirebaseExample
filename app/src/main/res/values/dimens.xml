@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--DPs, use for margin/padding only-->
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_25">25dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
+    <dimen name="dp_75">75dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
+
+    <!--SPs, use for text size only-->
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+</resources>
