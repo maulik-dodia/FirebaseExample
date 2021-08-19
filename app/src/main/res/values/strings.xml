@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">FirebaseExample</string>
 
+    <string name="str_na">N/A</string>
+    <string name="str_hyphen">-</string>
     <string name="str_price_with_currency">₹ %s</string>
+    <string name="str_error_occurred">An error occurred: %s</string>
 </resources>

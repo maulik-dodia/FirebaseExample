@@ -1,12 +1,13 @@
 package com.firebaseexample.adapter
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.firebaseexample.ui.MainActivity
 import com.firebaseexample.R
 import com.firebaseexample.utils.PRODUCT_DESC
 import com.firebaseexample.utils.PRODUCT_IMAGE
@@ -20,8 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class ProductListAdapter(private val mList: ArrayList<String>) :
-    RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
+class ProductListAdapter(private val mContext: Context, private val mList: ArrayList<String>) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
@@ -31,102 +31,60 @@ class ProductListAdapter(private val mList: ArrayList<String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemsViewModel = mList[position]
         holder.apply {
-
-            // Write a message to the database
-            val database = FirebaseDatabase.getInstance()
-            //val myRef = database.getReference("message")
-            val myRef = database.reference
-
-            // Read from the database
-            myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-
-                    /*val name = dataSnapshot.child("PRODUCT_NAME/$itemsViewModel")
-                    Log.e("kk", "Product Name: ---> $name")
-                    tvProductTitle.text = name.value.toString()*/
-
-                    for (data in dataSnapshot.children) {
-                        when (data.key) {
-                            PRODUCT_NAME -> {
-                                val productNameKeyValue: HashMap<String, String> =
-                                    data.value as HashMap<String, String>
-                                val singleProductObj =
-                                    productNameKeyValue.entries.find { it.key == itemsViewModel }
-                                val productName = singleProductObj?.value ?: "N/A"
-                                tvProductTitle.text = productName
-                            }
-                            PRODUCT_IMAGE -> {
-                                val productNameKeyValue: HashMap<String, String> =
-                                    data.value as HashMap<String, String>
-                                val singleProductObj =
-                                    productNameKeyValue.entries.find { it.key == itemsViewModel }
-
-                                val productPic = singleProductObj?.value ?: "N/A"
-                                holder.pbProductPic.visibility = View.VISIBLE
-                                Picasso.get()
-                                    .load(productPic)
-                                    .into(ivProductPic, object : Callback {
-                                        override fun onSuccess() {
-                                            holder.pbProductPic.visibility = View.GONE
-                                        }
-
-                                        override fun onError(e: Exception?) {
-                                            holder.pbProductPic.visibility = View.GONE
-                                        }
-                                    })
-                            }
-                            PRODUCT_DESC -> {
-                                val productNameKeyValue: HashMap<String, String> =
-                                    data.value as HashMap<String, String>
-                                val singleProductObj =
-                                    productNameKeyValue.entries.find { it.key == itemsViewModel }
-
-                                val productDesc = singleProductObj?.value ?: "N/A"
-
-                                tvProductDesc.text = productDesc
-                            }
-                            PRODUCT_PRICE -> {
-                                val productNameKeyValue: HashMap<String, Long> =
-                                    data.value as HashMap<String, Long>
-                                val singleProductObj =
-                                    productNameKeyValue.entries.find { it.key == itemsViewModel }
-
-                                val productPrice = singleProductObj?.value ?: "-"
-
-                                tvProductPrice.text = String.format(
-                                    tvProductPrice.context.getString(R.string.str_price_with_currency),
-                                    productPrice
-                                )
-                            }
-                        }
+            val firebaseDBRef = FirebaseDatabase.getInstance().reference
+            firebaseDBRef.apply {
+                child(PRODUCT_NAME).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        (mContext as MainActivity).hideProgressBar()
+                        val productNameKeyValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
+                        val singleProduct = productNameKeyValue.entries.find { it.key == itemsViewModel }
+                        tvProductTitle.text = singleProduct?.value ?: tvProductTitle.context.getString(R.string.str_na)
                     }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Failed to read value
-                    Log.w("mk", "Failed to read value.", error.toException())
-                }
-            })
-
-            /*Picasso.get()
-                .load(itemsViewModel.product_pic)
-                .into(ivProductPic, object : Callback {
-                    override fun onSuccess() {
-
+                    override fun onCancelled(error: DatabaseError) {
                     }
-
-                    override fun onError(e: Exception?) {
-
+                })
+                child(PRODUCT_IMAGE).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val productNameKeyValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
+                        val singleProduct = productNameKeyValue.entries.find { it.key == itemsViewModel }
+                        val productPic = singleProduct?.value ?: pbProductPic.context.getString(R.string.str_na)
+                        holder.pbProductPic.visibility = View.VISIBLE
+                        Picasso.get()
+                            .load(productPic)
+                            .into(ivProductPic, object : Callback {
+                                override fun onSuccess() {
+                                    holder.pbProductPic.visibility = View.GONE
+                                }
+                                override fun onError(e: Exception?) {
+                                    holder.pbProductPic.visibility = View.GONE
+                                }
+                            })
                     }
-                })*/
-            //tvProductTitle.text = itemsViewModel
-            /*tvProductDesc.text = itemsViewModel.product_desc
-            tvProductPrice.text = String.format(
-                tvProductPrice.context.getString(R.string.str_price_with_currency),
-                itemsViewModel.product_price
-            )*/
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+                child(PRODUCT_DESC).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val productNameKeyValue: HashMap<String, String> = snapshot.value as HashMap<String, String>
+                        val singleProduct = productNameKeyValue.entries.find { it.key == itemsViewModel }
+                        tvProductDesc.text = singleProduct?.value ?: tvProductDesc.context.getString(R.string.str_na)
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+                child(PRODUCT_PRICE).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val productNameKeyValue: HashMap<String, Long> = snapshot.value as HashMap<String, Long>
+                        val singleProduct = productNameKeyValue.entries.find { it.key == itemsViewModel }
+                        tvProductPrice.text = String.format(
+                            tvProductPrice.context.getString(R.string.str_price_with_currency),
+                            singleProduct?.value ?: tvProductDesc.context.getString(R.string.str_hyphen)
+                        )
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+            }
             if (position == mList.size - 1) {
                 tvDivider.apply {
                     visibility = View.GONE

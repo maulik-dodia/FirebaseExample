@@ -1,6 +1,5 @@
 package com.firebaseexample.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,12 +25,10 @@ class MainViewModel : ViewModel() {
                         resultsLiveData.postValue(BaseRes.Success(productIdResponse))
                     }
                 } else {
-                    Log.e("mk", "Error 1 ")
                     resultsLiveData.postValue(BaseRes.Error(response.message()))
                 }
             } catch (throwableError: Throwable) {
                 throwableError.localizedMessage?.let {
-                    Log.e("mk", "Error 2 ")
                     resultsLiveData.postValue(BaseRes.Error(it))
                 }
             }
